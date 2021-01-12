@@ -1,46 +1,35 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Front-end developer challenge
+The aim of the implementation is not to complete the assignment (of course this would be great), but rather to find out more about your approach, the quality,
+cleanliness and structure of your code, and get to know your personal prioritization. This means that it’s better if send an unfinished app with code you can be proud
+of, rather than a complete app with lots of messy code. Mockups in this task are just a design suggestion – you are free to implement any other design as soon as it
+looks OK and meets the requirements.
+## Notes
+* The backend can be accessed via https://reqres.in/api/users?page=1
+# List view
+## Requirements
+* The landing page displays a list of users with the following columns:
+* User Image
+* First Name
+* Last Name
+* Email
+* Options (Buttons: Edit Delete )
+* The table/list can be searched
+* _Optional:_ The list can be sorted
+# Add a user
+## Requirements
+* Clicking on the “Add user button will take you to a form, which contains the following fields:
+* First Name
+* Last Name
+* Email
+* A new user can be saved and the user will be returned to the list view
+* _Optional :_ There are basic validations available (e.g.: The "Save" button is only active if all the content is valid)
+# Edit a user
+## Requirements
+* There is an interaction element to edit existing user information
+* Clicking on this element will take you to a form view
+* All changes can be saved (e.g.: If canceled, the user is returned to the list view)
+* _Optional :_ There are basic validations available
+# Delete a user
+## Requirements
+* There is an interaction element to delete an existing user
+* _Optional :_ A dialog will appear to confirm the deletion
