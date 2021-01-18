@@ -3,6 +3,7 @@ import {
     UPDATE_USER,
     REMOVE_USER,
     SORT_USERS,
+    SET_SEARCH_QUERY,
     UsersActionTypes,
 } from './types'
 
@@ -35,5 +36,12 @@ export const sortUsers = (sort_key: keyof userData, ascending: boolean): UsersAc
         type: SORT_USERS,
         sort_key,
         ascending
+    })
+}
+
+export const setSearchQuery = (query: string): UsersActionTypes => {
+    return ({
+        type: SET_SEARCH_QUERY,
+        query
     })
 }
