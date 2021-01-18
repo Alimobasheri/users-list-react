@@ -4,12 +4,14 @@ export interface Users {
     users: userData[] | [],
     sort_key: string,
     ascending: boolean,
-    count: number
+    count: number,
+    searchQuery: string
 }
 
 export const initialState = {
     users: [],
     sort_key: 'id',
     ascending: false,
-    count: 0
+    count: 0,
+    searchQuery: ''
 }
