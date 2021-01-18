@@ -2,11 +2,9 @@ import React, {FunctionComponent} from 'react'
 import Container from '@material-ui/core/Container'
 import {makeStyles} from '@material-ui/core/styles'
 
+import {UsersProvider} from '../../contexts/users'
+
 import UsersList from './components/users-list'
-
-import {useFetch} from '../../hooks/useFetch'
-
-import {fetchReturn} from '../../types'
 
 const useContainerStyles = makeStyles(theme => ({
     root: {
@@ -20,22 +18,18 @@ const useContainerStyles = makeStyles(theme => ({
 }))
 
 const Users: FunctionComponent<{}> = () => {
-    const {loading, data}: fetchReturn = useFetch()
-
     const classes = useContainerStyles()
     
     return (
-        <Container
-        className={classes.root}
-        component="main">
-            <div>
-                {!loading &&
-                    data.data && Array.isArray(data.data) && 
-                        <UsersList
-                        users={data.data} />
-                }
-            </div>
-        </Container>
+        <UsersProvider>
+            <Container
+            className={classes.root}
+            component="main">
+                <div>
+                    <UsersList/>
+                </div>
+            </Container>
+        </UsersProvider>
     )
 }
 
