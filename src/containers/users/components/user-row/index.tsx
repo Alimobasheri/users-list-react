@@ -68,7 +68,7 @@ const UserRow: FunctionComponent<userRowProps> = ({user, onEdit, onDelete}) => {
             </ListItemAvatar>
             <ListItemText
             className={classes.text}
-            primary={`${user.first_name} ${user.last_name}`}
+            primary={`${user.first_name} ${user.last_name}, ID: ${user.id}`}
             secondary={user.email} 
             data-testid="rowText"/>
             <ListItemSecondaryAction>
