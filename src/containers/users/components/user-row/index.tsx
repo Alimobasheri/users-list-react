@@ -42,12 +42,12 @@ const UserRow: FunctionComponent<userRowProps> = ({user, onEdit, onDelete}) => {
 
     const handleEdit = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        typeof onEdit === 'function' && onEdit()
+        typeof onEdit === 'function' && onEdit(user)
     }
 
     const handleDelete = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        typeof onDelete === 'function' && onDelete()
+        typeof onDelete === 'function' && onDelete(user)
     }
 
     return (
