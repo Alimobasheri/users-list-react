@@ -3,7 +3,7 @@ import React, {FunctionComponent, useState, useContext} from 'react'
 import {UsersContext} from '../../../../contexts/users'
 
 import List from '@material-ui/core/List'
-import Card from '@material-ui/core/Card'
+import Paper from '@material-ui/core/Paper'
 import {makeStyles} from '@material-ui/core/styles'
 
 import UserRow from '../user-row'
@@ -22,13 +22,16 @@ const useListStyles = makeStyles(theme => ({
 const UsersList: FunctionComponent<{}> = () => {
     const {
         users,
+        searchQuery,
+        ascending,
+        sort_key,
         isFetchingData,
         onUpdateUser,
         onRemoveUser,
         onAddUser,
         onSortUsers
     } = useContext(UsersContext)
-
+    
     const classes = useListStyles()
 
     const [openEditDialog, setOpenEditDialog] = useState(false)
@@ -48,19 +51,40 @@ const UsersList: FunctionComponent<{}> = () => {
 
     const handleDelete = (user: userData) => onRemoveUser && onRemoveUser(user.id)
 
-    const usersRows = () => 
-        users && users.map(user =>
-            <UserRow
-            key={user.id}
-            user={user}
-            onEdit={handleEdit}
-            onDelete={handleDelete} />
-        )
+    const usersRows = () => {
+        if(users) {
+            let usersToRender = users
+            if (searchQuery && searchQuery !== '') {
+                const queryRegex = new RegExp(searchQuery, 'i')
+                usersToRender = usersToRender.filter(user => {
+                    return queryRegex.test(`${user.first_name} ${user.last_name} ${user.email}`)
+                })
+            }
+            if(sort_key && ascending !== undefined) {
+                (usersToRender as any).sort((a: any, b: any) => {
+                    if(ascending) {
+                        return a[sort_key] > b[sort_key] ? -1 : a[sort_key] < b[sort_key] ? 1 : 0
+                    } else {
+                        return a[sort_key] > b[sort_key] ? 1 : a[sort_key] < b[sort_key] ? -1 : 0
+                    }
+                })
+            }
+            return usersToRender.map(user => 
+                <UserRow
+                key={user.id}
+                user={user}
+                onEdit={handleEdit}
+                onDelete={handleDelete} />
+            )
+        }
+        return null
+    }
 
     return(
         <List
         className={classes.root}
-        component={Card}>
+        component={Paper}
+        elevation={0}>
             {usersRows()}
         {openEditDialog && editingUser !== null &&
             <EditForm
