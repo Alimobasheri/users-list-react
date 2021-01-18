@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 
-import {addUser, removeUser, updateUser} from './actions'
+import {addUser, removeUser, setSearchQuery, updateUser} from './actions'
 import {UsersReducer} from './reducers'
 import {initialState} from './state'
 import {userData} from '../../types'
@@ -73,4 +73,17 @@ it("Should update count and ids correctly", () => {
     const updatedState = UsersReducer(removedState, updateUser(1, {...users[0], id: 24, last_name: 'somex'}))
 
     expect(updatedState).toEqual(finalResult)
+})
+
+it("should store search query correctly", () => {
+    const reducedState = UsersReducer(initialState, addUser(users))
+    const reqducedQueriedState = UsersReducer(reducedState, setSearchQuery('mehdi'))
+
+    expect(reqducedQueriedState.searchQuery).toBe('mehdi')
+
+    const filterUsers = reqducedQueriedState.users.filter(user => 
+        `${user.first_name} ${user.last_name} ${user.email}`.indexOf(reqducedQueriedState.searchQuery) > -1
+    )
+
+    expect(filterUsers).toEqual([users[0]])
 })
