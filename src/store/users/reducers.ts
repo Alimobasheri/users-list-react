@@ -3,7 +3,8 @@ import {
     UPDATE_USER,
     REMOVE_USER,
     SORT_USERS,
-    UsersActionTypes
+    UsersActionTypes,
+    SET_SEARCH_QUERY
 } from './types'
 
 import {
@@ -67,6 +68,11 @@ export const UsersReducer = (
                 ...state,
                 sort_key: action.sort_key,
                 ascending: action.ascending
+            }
+        case SET_SEARCH_QUERY:
+            return {
+                ...state,
+                searchQuery: action.query
             }
         default:
             return state
