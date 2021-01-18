@@ -4,6 +4,7 @@ export const ADD_USER = 'ADD_USER'
 export const UPDATE_USER = 'UPDATE_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const SORT_USERS = 'SORT_USERS'
+export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY'
 
 export interface AddUserAction {
     type: typeof ADD_USER,
@@ -27,4 +28,9 @@ export interface SortUsersAction {
     ascending: boolean
 }
 
-export type UsersActionTypes = AddUserAction | UpdateUserAction | RemoveUserAction | SortUsersAction
+export interface SetSearchQueryAction {
+    type: typeof SET_SEARCH_QUERY,
+    query: string
+}
+
+export type UsersActionTypes = AddUserAction | UpdateUserAction | RemoveUserAction | SortUsersAction | SetSearchQueryAction
