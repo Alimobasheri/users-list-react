@@ -6,8 +6,8 @@ import {useFetch} from '../../hooks/useFetch'
 import {fetchReturn, userData} from '../../types'
 
 import {UsersReducer} from '../../store/users/reducers'
-import {addUser, updateUser, removeUser, sortUsers} from '../../store/users/actions'
-import {Users, initialState} from '../../store/users/state'
+import {addUser, updateUser, removeUser, sortUsers, setSearchQuery} from '../../store/users/actions'
+import {initialState} from '../../store/users/state'
 
 const UsersProvider: FunctionComponent<{}> = ({children}) => {
     const {loading, data}: fetchReturn = useFetch()
@@ -18,6 +18,7 @@ const UsersProvider: FunctionComponent<{}> = ({children}) => {
     const onUpdateUser = (id: userData["id"], updatedUser: userData) => usersDispatch(updateUser(id, updatedUser))
     const onRemoveUser = (id: userData["id"]) => usersDispatch(removeUser(id))
     const onSortUsers = (sort_key: keyof userData, ascending: boolean) => usersDispatch(sortUsers(sort_key, ascending))
+    const onSetSearchQuery = (query: string) => usersDispatch(setSearchQuery(query))
 
     useEffect(() => {
         !loading ?
@@ -30,10 +31,15 @@ const UsersProvider: FunctionComponent<{}> = ({children}) => {
         value={{
             users: usersState.users,
             isFetchingData: loading,
+            sort_key: usersState.sort_key,
+            searchQuery: usersState.searchQuery,
+            count: usersState.count,
+            ascending: usersState.ascending,
             onAddUser,
             onUpdateUser,
             onRemoveUser,
-            onSortUsers
+            onSortUsers,
+            onSetSearchQuery
         }}>
             {children}
         </UsersContext.Provider>
