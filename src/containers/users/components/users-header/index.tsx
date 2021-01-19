@@ -26,14 +26,6 @@ const UsersHeader: FunctionComponent<{}> = () => {
 
     const [openAddUserDialog, setOpenAddUserDialog] = useState(false)
 
-    const emptyUser: userData = {
-        first_name: '',
-        last_name: '',
-        email: '',
-        id: 0,
-        avatar: ''
-    }
-
     const saveNewUser = (user: userData) => {
         onAddUser && onAddUser(user)
         setOpenAddUserDialog(false)
@@ -47,7 +39,8 @@ const UsersHeader: FunctionComponent<{}> = () => {
         alignItems="center">
             <Grid
             item
-            xs={8}>
+            xs={12}
+            md={8}>
                 <Typography
                 variant="h1">
                     Users
@@ -55,7 +48,8 @@ const UsersHeader: FunctionComponent<{}> = () => {
             </Grid>
             <Grid
             item
-            xs={4}>
+            xs={12}
+            md={4}>
                 <Typography
                 variant="body1">
                     {count} users
