@@ -8,8 +8,11 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import UserRow from '../user-row'
 import EditForm from '../edit-form'
+import DeleteDialog from '../delete-dialog'
 
 import {userData} from '../../../../types'
+
+import {sortUsersBy, searchUsersBy} from '../../utils'
 
 const useListStyles = makeStyles(theme => ({
     root: {
@@ -25,17 +28,22 @@ const UsersList: FunctionComponent<{}> = () => {
         searchQuery,
         ascending,
         sort_key,
-        isFetchingData,
         onUpdateUser,
         onRemoveUser,
-        onAddUser,
-        onSortUsers
     } = useContext(UsersContext)
     
     const classes = useListStyles()
 
     const [openEditDialog, setOpenEditDialog] = useState(false)
     const [editingUser, setEditingUser] = useState<userData | null>(null)
+
+    const [openDeletingDialog, setOpenDeletingDialog] = useState(false)
+    const [deletingUser, setDeletingUser] = useState<userData | null>(null)
+
+    const closeDialogs = () => {
+        setOpenEditDialog(false)
+        setOpenDeletingDialog(false)
+    }
 
     const handleEdit = (user: userData) => {
         setEditingUser(user)
@@ -44,31 +52,33 @@ const UsersList: FunctionComponent<{}> = () => {
 
     const saveUpdatedUser = (user: userData, updatedUser: userData) => {
         onUpdateUser && onUpdateUser(user.id, updatedUser)
-        setOpenEditDialog(false)
+        setEditingUser(null)
+        closeDialogs()
     }
 
-    const closeDialog = () => setOpenEditDialog(false)
+    const handleDelete = (user: userData) => {
+        setDeletingUser(user)
+        setOpenDeletingDialog(true)
+    }
 
-    const handleDelete = (user: userData) => onRemoveUser && onRemoveUser(user.id)
+    const removeChosenUser = () => {
+        onRemoveUser && deletingUser && onRemoveUser(deletingUser.id)
+        setDeletingUser(null)
+        closeDialogs()
+    }
 
     const usersRows = () => {
         if(users) {
             let usersToRender = users
+
             if (searchQuery && searchQuery !== '') {
-                const queryRegex = new RegExp(searchQuery, 'i')
-                usersToRender = usersToRender.filter(user => {
-                    return queryRegex.test(`${user.first_name} ${user.last_name} ${user.email}`)
-                })
+                usersToRender = searchUsersBy(usersToRender, searchQuery)
             }
+
             if(sort_key && ascending !== undefined) {
-                (usersToRender as any).sort((a: any, b: any) => {
-                    if(ascending) {
-                        return a[sort_key] > b[sort_key] ? -1 : a[sort_key] < b[sort_key] ? 1 : 0
-                    } else {
-                        return a[sort_key] > b[sort_key] ? 1 : a[sort_key] < b[sort_key] ? -1 : 0
-                    }
-                })
+                usersToRender = sortUsersBy(usersToRender, sort_key, ascending)
             }
+
             return usersToRender.map(user => 
                 <UserRow
                 key={user.id}
@@ -77,6 +87,7 @@ const UsersList: FunctionComponent<{}> = () => {
                 onDelete={handleDelete} />
             )
         }
+
         return null
     }
 
@@ -91,7 +102,14 @@ const UsersList: FunctionComponent<{}> = () => {
             user={editingUser}
             open={openEditDialog}
             onSave={saveUpdatedUser}
-            onCancel={closeDialog}/>
+            onCancel={closeDialogs}/>
+        }
+        {openDeletingDialog && deletingUser !== null &&
+            <DeleteDialog
+            user={deletingUser}
+            open={openDeletingDialog}
+            onOk={removeChosenUser}
+            onCancel={closeDialogs} />
         }
         </List>
     )
