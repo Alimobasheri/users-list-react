@@ -1,41 +1,66 @@
 import React, {FunctionComponent} from 'react'
+
 import Container from '@material-ui/core/Container'
-import {makeStyles} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
+import {UsersProvider} from '../../contexts/users'
+
+import UsersHeader from './components/users-header'
 import UsersList from './components/users-list'
-
-import {useFetch} from '../../hooks/useFetch'
-
-import {fetchReturn} from '../../types'
 
 const useContainerStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(2),
         width: '100%',
         display: 'flex',
-        flexDirection: 'column',
+        flexFlow: 'row nowrap',
         justifyContent: 'center',
-        alignItems: 'center'
+        [theme.breakpoints.down('sm')]: {
+            padding: 0
+        }
+    },
+    wrapper: {
+        width: '100%',
+        padding: theme.spacing(4),
+        maxWidth: 500,
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(1)
+        }
     }
 }))
 
 const Users: FunctionComponent<{}> = () => {
-    const {loading, data}: fetchReturn = useFetch()
-
     const classes = useContainerStyles()
     
+    const theme = useTheme()
+    const mediaQuery = useMediaQuery(theme.breakpoints.down('sm'))
     return (
-        <Container
-        className={classes.root}
-        component="main">
-            <div>
-                {!loading &&
-                    data.data && Array.isArray(data.data) && 
-                        <UsersList
-                        users={data.data} />
-                }
-            </div>
-        </Container>
+        <UsersProvider>
+            <Container
+            className={classes.root}>
+                <Grid
+                className={classes.wrapper}
+                container
+                alignContent="stretch"
+                justify="center"
+                component={Paper}
+                elevation={mediaQuery ? 0 : 8}>
+                    <Grid
+                    item
+                    xs={12}>
+                        <UsersHeader />
+                    </Grid>
+                    <Grid
+                    item
+                    xs={12}>
+                        <UsersList />
+                    </Grid>
+                </Grid>
+            </Container>
+        </UsersProvider>
     )
 }
 
