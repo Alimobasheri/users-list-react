@@ -4,6 +4,7 @@ import {userData} from '../../../../types'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import {useTheme} from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -17,6 +18,8 @@ import useForm from '../../../../hooks/useForm'
 
 import {nameValidator, emailValidator} from '../../../../validators'
 import { FormState } from '../../../../hooks/useForm/types'
+
+import {isAllFormsValidated} from '../../utils'
 
 interface EditFormProps {
     user: userData,
@@ -33,22 +36,14 @@ const EditForm: FunctionComponent<EditFormProps> = ({user, open, onSave, onCance
     const lastNameForm = useForm({value: user.last_name, validated: true, validator: nameValidator})
     const emailForm = useForm({value: user.email, validated: true, validator: emailValidator})
 
-    const isAllFormsValidated = (forms: FormState[]) => 
-        forms.reduce((acc, form) => 
-            acc === false ?
-                false :
-                form.validated === true ?
-                true : 
-                false
-        , true)
+    const allFormsArray: FormState[] = [
+        firstNameForm,
+        lastNameForm,
+        emailForm
+    ]
 
     const handleSaveClick = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        const allFormsArray: FormState[] = [
-            firstNameForm,
-            lastNameForm,
-            emailForm
-        ]
         if (isAllFormsValidated(allFormsArray) && firstNameForm.validated && firstNameForm.value !== undefined) {
             const updatedUser: userData = {
                 ...user,
@@ -73,18 +68,34 @@ const EditForm: FunctionComponent<EditFormProps> = ({user, open, onSave, onCance
                 <DialogContentText>
                     To edit current user you can change their data in the following fields:
                 </DialogContentText>
-                <InputField
-                label="First Name"
-                required={true}
-                formState={firstNameForm}/>
-                <InputField
-                label="Last Name"
-                required={true}
-                formState={lastNameForm}/>
-                <InputField
-                label="Email"
-                required={true}
-                formState={emailForm}/>
+                <Grid
+                container>
+                    <Grid
+                    item
+                    xs={12}
+                    spacing={4}>
+                        <InputField
+                        label="First Name"
+                        required={true}
+                        formState={firstNameForm}/>
+                    </Grid>
+                    <Grid
+                    item
+                    xs={12}>
+                        <InputField
+                        label="Last Name"
+                        required={true}
+                        formState={lastNameForm}/>
+                    </Grid>
+                    <Grid
+                    item
+                    xs={12}>
+                        <InputField
+                        label="Email"
+                        required={true}
+                        formState={emailForm}/>
+                    </Grid>
+                </Grid>
             </DialogContent>
             <DialogActions>
                 <Button 

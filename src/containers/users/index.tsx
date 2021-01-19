@@ -25,7 +25,10 @@ const useContainerStyles = makeStyles(theme => ({
     wrapper: {
         width: '100%',
         padding: theme.spacing(4),
-        maxWidth: 500
+        maxWidth: 500,
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(1)
+        }
     }
 }))
 

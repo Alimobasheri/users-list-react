@@ -6,7 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
-import {makeStyles} from '@material-ui/core/styles'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -20,13 +21,29 @@ const useRowStyles = makeStyles(theme  => ({
     },
     avatar: {
         width: 100,
-        height: 100
+        height: 100,
+        [theme.breakpoints.down('sm')]: {
+            width: 50,
+            height: 50,
+            '& > img': {
+                width: 80,
+                height: 80,
+                objectFit: 'cover'
+            }
+        }
     },
     text: {
         padding: theme.spacing(1),
         marginLeft: theme.spacing(2),
         '& .MuiListItemText-secondary': {
             marginTop: theme.spacing(1)
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(0.5),
+            marginLeft: theme.spacing(1),
+            '& .MuiListItemText-secondary': {
+                marginTop: theme.spacing(0.5)
+            },
         }
     }
 }))
@@ -39,6 +56,9 @@ interface userRowProps {
 
 const UserRow: FunctionComponent<userRowProps> = ({user, onEdit, onDelete}) => {
     const classes = useRowStyles()
+
+    const theme = useTheme()
+    const smMediaQuery = theme.breakpoints.down('sm')
 
     const handleEdit = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
@@ -78,7 +98,8 @@ const UserRow: FunctionComponent<userRowProps> = ({user, onEdit, onDelete}) => {
                 component="button"
                 onClick={handleEdit}
                 data-testid="editButton"
-                disabled={typeof onEdit !== 'function'}>
+                disabled={typeof onEdit !== 'function'}
+                size={smMediaQuery ? 'small' : 'medium'}>
                     <EditIcon
                     htmlColor="blue" />
                 </IconButton>
@@ -88,7 +109,8 @@ const UserRow: FunctionComponent<userRowProps> = ({user, onEdit, onDelete}) => {
                 component="button"
                 onClick={handleDelete}
                 data-testid="deleteButton"
-                disabled={typeof onDelete !== 'function'}>
+                disabled={typeof onDelete !== 'function'}
+                size={smMediaQuery ? 'small' : 'medium'}>
                     <DeleteIcon
                     htmlColor="red" />
                 </IconButton>
